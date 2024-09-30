@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <iostream>
 
 namespace See3DLine {
 	namespace Math {
@@ -32,6 +33,20 @@ namespace See3DLine {
 			Vector2 operator-();
 
 			double len();
+		};
+
+		// It has little math's matrix, but it is comfortable!
+		struct Matrix
+		{
+			Vector3 i, j, k;
+
+			Matrix(float arr[3][3]);
+
+			Matrix(Vector3 i, Vector3 j, Vector3 k) : i(i), j(j), k(k) {}
+
+			Matrix operator*(Matrix matrix);
+
+			Vector3 run(Vector3 vec);
 		};
 	}
 }
