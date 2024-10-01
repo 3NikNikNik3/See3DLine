@@ -26,6 +26,8 @@ namespace See3DLine {
 
 			Vector2(float x = 0, float y = 0) : x(x), y(y) {}
 
+			static Vector2 Zero;
+
 			Vector2 operator+(Vector2 vec);
 
 			Vector2 operator-(Vector2 vec);
