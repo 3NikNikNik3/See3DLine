@@ -88,7 +88,7 @@ namespace See3DLine::Graphics {
 				if (x_min > points[i]->vec.x)
 					x_min = points[i]->vec.x;
 			
-			pos = { x_min - 1, 0, 0 };
+			pos = { 0, 0, 0 };
 		}
 
 		char* Points::copy(char* arr) {
