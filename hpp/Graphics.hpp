@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "raylib.h"
 
 #include "Math.hpp"
 
@@ -43,6 +44,12 @@ namespace See3DLine {
 			bool is_equally(char* a, char* b);
 
 			char* copy(char* arr);
+
+			void draw(Rectangle rec, Math::Vector2 size);
+
+			Math::Matrix*& GetAng();
+
+			Math::Vector3& GetPos();
 		}
 	}
 }

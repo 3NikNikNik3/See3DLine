@@ -1,8 +1,10 @@
 #include "hpp/Graphics.hpp"
 
+#include "raylib.h"
+
 namespace See3DLine::Graphics {
 	// Point
-	Point::Point(Vector3 vec = Vector3(), char* name = new char[0] {}) : vec(vec), name(name) {}
+	Point::Point(Math::Vector3 vec = Math::Vector3(), char* name = new char[0] {}) : vec(vec), name(name) {}
 
 	Point::~Point() {
 		delete[] name;
@@ -25,7 +27,7 @@ namespace See3DLine::Graphics {
 
 		Math::Matrix* ang;
 		Math::Vector3 pos;
-		Math::Matrix see_rev = Matrix({ {0, 0, -1}, {0, 1, 0}, {1, 0, 0} });
+		Math::Matrix see_rev = Math::Matrix({ {0, 0, -1}, {0, 1, 0}, {1, 0, 0} });
 
 		bool Points::is_equally(char* a, char* b) {
 			if (sizeof(a) != sizeof(b))
@@ -70,7 +72,7 @@ namespace See3DLine::Graphics {
 		void Points::apply(std::vector<Point*>& res) {
 			res.resize(points.size());
 
-			Matrix rotate = *ang * see_rev;
+			Math::Matrix rotate = *ang * see_rev;
 
 			for (int i = 0; i < res.size(); ++i)
 				res[i] = new Point{ rotate.run(points[i]->vec - pos), copy(points[i]->name) };
@@ -78,7 +80,7 @@ namespace See3DLine::Graphics {
 
 		void Points::reset_camera() {
 			delete ang;
-			ang = new Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
+			ang = new Math::Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
 
 			float x_min = 1;
 			for (int i = 0; i < points.size(); ++i)
@@ -94,5 +96,23 @@ namespace See3DLine::Graphics {
 				ans[i] = arr[i];
 			return ans;
 		}
+
+		void draw(Rectangle rec, Math::Vector2 size) {
+			std::vector<Point*> new_points;
+
+			apply(new_points);
+
+			for (int i = 0; i < lines.size(); ++i)
+				DrawLine((new_points[lines[i]->first]->vec.x / size.x + 0.5) * rec.width + rec.x, (0.5 - new_points[lines[i]->first]->vec.y / size.y) * rec.height + rec.y,
+					(new_points[lines[i]->second]->vec.x / size.x + 0.5) * rec.width + rec.x, (0.5 - new_points[lines[i]->second]->vec.y / size.y) * rec.height + rec.y,
+					{ 0, 0, 0, 255 });
+
+			for (int i = 0; i < new_points.size(); ++i)
+				delete new_points[i];
+		}
+
+		Math::Matrix*& GetAng() { return ang; }
+
+		Math::Vector3& GetPos() { return pos; }
 	}
 }

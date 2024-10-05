@@ -46,7 +46,9 @@ namespace See3DLine {
 
 			Matrix(Vector3 i, Vector3 j, Vector3 k) : i(i), j(j), k(k) {}
 
-			Matrix operator*(Matrix matrix);
+			Matrix operator*(Matrix& matrix);
+
+			void operator*=(Matrix& matrix);
 
 			Vector3 run(Vector3 vec);
 		};

@@ -38,8 +38,15 @@ namespace See3DLine::Math {
 	// Matrix
 	Matrix::Matrix(float arr[3][3]) : i({ arr[0][0], arr[1][0], arr[2][0] }), j({ arr[0][1], arr[1][1], arr[2][1] }), k({ arr[0][2], arr[1][2], arr[2][2] }) {}
 
-	Matrix Matrix::operator*(Matrix matrix) {
+	Matrix Matrix::operator*(Matrix &matrix) {
 		return { matrix.run(i), matrix.run(j), matrix.run(k) };
+	}
+
+	void Matrix::operator*=(Matrix& matrix) {
+		Matrix m_ = *this * matrix;
+		i = m_.i;
+		j = m_.j;
+		k = m_.k;
 	}
 
 	Vector3 Matrix::run(Vector3 vec) {
