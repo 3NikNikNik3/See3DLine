@@ -6,23 +6,23 @@ namespace See3DLine {
 	namespace Screens {
 		ScreenLine::ScreenLine(Math::Vector2 size_see) : size_see(size_see), move_now(false), timer(2) {
 			Graphics::Points::init(std::vector<Graphics::Point*>{
-					new Graphics::Point({ 0, 0, 0 }, new char[1] {'A'}),
-					new Graphics::Point({ 0, 0, 0.5 }, new char[1] {'B'}),
-					new Graphics::Point({ 0.5, 0, 0.5 }, new char[1] {'C'}),
-					new Graphics::Point({ 0.5, 0, 0 }, new char[1] {'D'}),
-					new Graphics::Point({ 0, 0.5, 0 }, new char[2] {'A', '1'}),
-					new Graphics::Point({ 0, 0.5, 0.5 }, new char[2] {'B', '1'}),
-					new Graphics::Point({ 0.5, 0.5, 0.5 }, new char[2] {'C', '1'}),
-					new Graphics::Point({ 0.5, 0.5, 0 }, new char[2] {'D', '1'}),
+					new Graphics::Point({ 0, 0, 0 }, new char[2] {'A', '\0'}),
+					new Graphics::Point({ 0, 0, 0.5 }, new char[2] {'B', '\0'}),
+					new Graphics::Point({ 0.5, 0, 0.5 }, new char[2] {'C', '\0'}),
+					new Graphics::Point({ 0.5, 0, 0 }, new char[2] {'D', '\0'}),
+					new Graphics::Point({ 0, 0.5, 0 }, new char[3] {'A', '1', '\0'}),
+					new Graphics::Point({ 0, 0.5, 0.5 }, new char[3] {'B', '1', '\0'}),
+					new Graphics::Point({ 0.5, 0.5, 0.5 }, new char[3] {'C', '1', '\0'}),
+					new Graphics::Point({ 0.5, 0.5, 0 }, new char[3] {'D', '1', '\0'}),
 			}, std::vector<Graphics::Line*>{
-					new Graphics::Line(new char[1] {'A'}, new char[1] {'B'}),
-					new Graphics::Line(new char[1] {'B'}, new char[1] {'C'}),
-					new Graphics::Line(new char[1] {'C'}, new char[1] {'D'}),
-					new Graphics::Line(new char[1] {'D'}, new char[1] {'A'}),
-					new Graphics::Line(new char[1] {'A'}, new char[2] {'A', '1'}),
-					new Graphics::Line(new char[1] {'B'}, new char[2] {'B', '1'}),
-					new Graphics::Line(new char[1] {'C'}, new char[2] {'C', '1'}),
-					new Graphics::Line(new char[1] {'D'}, new char[2] {'D', '1'}),
+					new Graphics::Line(new char[2] {'A', '\0'}, new char[2] {'B', '\0'}),
+					new Graphics::Line(new char[2] {'B', '\0'}, new char[2] {'C', '\0'}),
+					new Graphics::Line(new char[2] {'C', '\0'}, new char[2] {'D', '\0'}),
+					new Graphics::Line(new char[2] {'D', '\0'}, new char[2] {'A', '\0'}),
+					new Graphics::Line(new char[2] {'A', '\0'}, new char[3] {'A', '1', '\0'}),
+					new Graphics::Line(new char[2] {'B', '\0'}, new char[3] {'B', '1', '\0'}),
+					new Graphics::Line(new char[2] {'C', '\0'}, new char[3] {'C', '1', '\0'}),
+					new Graphics::Line(new char[2] {'D', '\0'}, new char[3] {'D', '1', '\0'}),
 			});
 			Graphics::Points::reset_camera();
 		}
