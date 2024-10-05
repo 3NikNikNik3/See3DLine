@@ -14,6 +14,16 @@ namespace See3DLine::Math {
 		return { x - vec.x, y - vec.y, z - vec.z };
 	}
 
+	void Vector3::operator+=(Vector3 vec) {
+		x += vec.x;
+		y += vec.y;
+		z += vec.z;
+	}
+
+	Vector3 Vector3::operator*(float num) {
+		return { x * num, y * num, z * num };
+	}
+
 	double Vector3::len() {
 		return sqrt(x * x + y * y + z * z);
 	}

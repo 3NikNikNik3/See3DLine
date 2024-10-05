@@ -17,6 +17,10 @@ namespace See3DLine {
 
 			Vector3 operator-();
 
+			void operator+=(Vector3 vec);
+
+			Vector3 operator*(float num);
+
 			double len();
 		};
 

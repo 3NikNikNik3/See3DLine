@@ -25,7 +25,7 @@ namespace See3DLine::Graphics {
 		std::vector<Point*> points;
 		std::vector<Line*> lines;
 
-		Math::Matrix* ang;
+		Math::Matrix* ang_xz, * ang_xy;
 		Math::Vector3 pos;
 		Math::Matrix see_rev = Math::Matrix({ {0, 0, -1}, {0, 1, 0}, {1, 0, 0} });
 
@@ -66,21 +66,22 @@ namespace See3DLine::Graphics {
 			for (int i = 0; i < points.size(); ++i)
 				delete points[i];
 			lines.clear();
-			delete ang;
+			delete ang_xy, ang_xz;
 		}
 
 		void Points::apply(std::vector<Point*>& res) {
 			res.resize(points.size());
 
-			Math::Matrix rotate = *ang * see_rev;
+			Math::Matrix rotate = *ang_xz * see_rev * *ang_xy;
 
 			for (int i = 0; i < res.size(); ++i)
 				res[i] = new Point{ rotate.run(points[i]->vec - pos), copy(points[i]->name) };
 		}
 
 		void Points::reset_camera() {
-			delete ang;
-			ang = new Math::Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
+			delete ang_xz, ang_xy;
+			ang_xy = new Math::Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
+			ang_xz = new Math::Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
 
 			float x_min = 1;
 			for (int i = 0; i < points.size(); ++i)
@@ -111,8 +112,12 @@ namespace See3DLine::Graphics {
 				delete new_points[i];
 		}
 
-		Math::Matrix*& GetAng() { return ang; }
+		Math::Matrix*& GetAngXZ() { return ang_xz; }
+
+		Math::Matrix*& GetAngXY() { return ang_xy; }
 
 		Math::Vector3& GetPos() { return pos; }
+
+		Math::Matrix GetAng() { return *ang_xz * *ang_xy; }
 	}
 }

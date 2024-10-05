@@ -47,9 +47,13 @@ namespace See3DLine {
 
 			void draw(Rectangle rec, Math::Vector2 size);
 
-			Math::Matrix*& GetAng();
+			Math::Matrix*& GetAngXZ();
+
+			Math::Matrix*& GetAngXY();
 
 			Math::Vector3& GetPos();
+
+			Math::Matrix GetAng();
 		}
 	}
 }

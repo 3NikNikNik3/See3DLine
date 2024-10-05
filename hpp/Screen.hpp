@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics.hpp"
+#include "raylib.h"
 
 namespace See3DLine {
 	namespace Screens {
@@ -8,7 +8,7 @@ namespace See3DLine {
 		public:
 			virtual void draw(Rectangle rec) = 0;
 
-			virtual void logic() = 0;
+			virtual void logic(float delta) = 0;
 		};
 	}
 }
