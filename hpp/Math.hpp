@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <iostream>
 
 namespace See3DLine {
 	namespace Math {

@@ -54,6 +54,8 @@ namespace See3DLine {
 			Math::Vector3& GetPos();
 
 			Math::Matrix GetAng();
+
+			Color& GetColorFon();
 		}
 	}
 }

@@ -29,10 +29,12 @@ namespace See3DLine::Graphics {
 		Math::Vector3 pos;
 		Math::Matrix see_rev = Math::Matrix({ {0, 0, -1}, {0, 1, 0}, {1, 0, 0} });
 
+		Color color_fon = { 255, 255, 255, 255 };
+
 		bool Points::is_equally(char* a, char* b) {
-			if (sizeof(a) != sizeof(b))
+			if (strlen(a) != strlen(b))
 				return false;
-			for (int i = 0; i < sizeof(a); ++i)
+			for (int i = 0; i < strlen(a); ++i)
 				if (a[i] != b[i])
 					return false;
 			return true;
@@ -119,5 +121,7 @@ namespace See3DLine::Graphics {
 		Math::Vector3& GetPos() { return pos; }
 
 		Math::Matrix GetAng() { return *ang_xz * *ang_xy; }
+
+		Color& GetColorFon() { return color_fon; }
 	}
 }

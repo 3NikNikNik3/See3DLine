@@ -4,7 +4,7 @@ using namespace See3DLine::Graphics;
 
 namespace See3DLine {
 	namespace Screens {
-		ScreenLine::ScreenLine(Math::Vector2 size_see) : size_see(size_see), move_now(true) {
+		ScreenLine::ScreenLine(Math::Vector2 size_see) : size_see(size_see), move_now(false), timer(2) {
 			Graphics::Points::init(std::vector<Graphics::Point*>{
 					new Graphics::Point({ 0, 0, 0 }, new char[1] {'A'}),
 					new Graphics::Point({ 0, 0, 0.5 }, new char[1] {'B'}),
@@ -25,7 +25,6 @@ namespace See3DLine {
 					new Graphics::Line(new char[1] {'D'}, new char[2] {'D', '1'}),
 			});
 			Graphics::Points::reset_camera();
-			GetMouseDelta();
 		}
 
 		ScreenLine::~ScreenLine() {
@@ -34,11 +33,20 @@ namespace See3DLine {
 
 		void ScreenLine::draw(Rectangle rec) {
 			Points::draw(rec, size_see);
+
+			if (move_now) {
+				if (timer <= 1) {
+					DrawText("To quit, presed ESC", rec.x + 5, rec.y + 5, 20, { (unsigned char)(255 - Points::GetColorFon().r), (unsigned char)(255 - Points::GetColorFon().g), (unsigned char)(255 - Points::GetColorFon().b), 255 });
+				}
+				else if (timer < 2) {
+					DrawText("To quit, presed ESC", rec.x + 5, rec.y + 5, 20, { (unsigned char)(255 - Points::GetColorFon().r), (unsigned char)(255 - Points::GetColorFon().g), (unsigned char)(255 - Points::GetColorFon().b), (unsigned char)(255 * (2 - timer))});
+				}
+			}
 		}
 
 		void ScreenLine::logic(float delta) {
 			if (move_now) {
-				if (IsMouseButtonDown(MouseButton::MOUSE_BUTTON_LEFT)) {
+				if (IsMouseButtonDown(MouseButton::MOUSE_BUTTON_RIGHT)) {
 					Points::GetPos() += Points::GetAng().run({ GetMouseDelta().x / 400, GetMouseDelta().y / 400, 0 });
 				}
 				else {
@@ -55,6 +63,33 @@ namespace See3DLine {
 						});
 				}
 				SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
+
+				if (IsKeyPressed(KeyboardKey::KEY_ESCAPE)) {
+					ShowCursor();
+
+					move_now = false;
+
+					timer = 2;
+				}
+
+				if (timer < 2)
+					timer += delta;
+			}
+			else {
+				if (GuiButton({ GetScreenWidth() - MeasureText("reset", 20) - 5.0f, GetScreenHeight() - 25.0f, (float)MeasureText("reset", 20), 20}, "reset")) {
+					Points::reset_camera();
+				}
+
+				if (IsMouseButtonPressed(MouseButton::MOUSE_BUTTON_LEFT) && GetMousePosition().y >= GetScreenHeight() / y_button && !CheckCollisionPointRec(GetMousePosition(), { GetScreenWidth() - MeasureText("reset", 20) - 5.0f, GetScreenHeight() - 25.0f, (float)MeasureText("reset", 20), 20 })) {
+					SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
+					GetMouseDelta();
+
+					HideCursor();
+
+					move_now = true;
+
+					timer = 0;
+				}
 			}
 		}
 	}
