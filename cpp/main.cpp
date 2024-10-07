@@ -4,7 +4,7 @@
 #include "raygui.h"
 
 #include "hpp/ScreenLines.hpp"
-#include <iostream>
+#include "hpp/ScreenSettings.hpp"
 
 using namespace See3DLine;
 
@@ -15,10 +15,16 @@ int main() {
 	SetTargetFPS(60);
 	SetExitKey(KeyboardKey::KEY_TAB);
 
-	std::vector<Screens::Screen*> screens = { new Screens::ScreenLine({ 2, 2 }) };
+	std::vector<Screens::Screen*> screens = { new Screens::ScreenLine({ 2, 2 }), new Screens::ScreenSettings() };
 	int id_screen = 0;
 
 	while (!WindowShouldClose()) {
+		for (int i = 0; i < screens.size(); ++i) {
+			if (IsKeyPressed(KeyboardKey::KEY_ONE + i)) {
+				id_screen = i;
+			}
+		}
+
 		screens[id_screen]->logic(GetFrameTime());
 
 		BeginDrawing();
