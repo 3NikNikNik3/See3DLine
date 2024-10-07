@@ -8,7 +8,7 @@
 namespace See3DLine {
 	namespace Screens {
 		class ScreenLine : public Screen {
-			Math::Vector2 size_see;
+			Math::Vector2 size_see, start_size_see;
 			bool move_now;
 			float timer;
 

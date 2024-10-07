@@ -10,22 +10,32 @@ using namespace See3DLine;
 
 
 int main() {
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(500, 500, "See3DLine");
 	SetTargetFPS(60);
 	SetExitKey(KeyboardKey::KEY_TAB);
 
-	Screens::Screen *screen = new Screens::ScreenLine({ 2, 2 });
+	std::vector<Screens::Screen*> screens = { new Screens::ScreenLine({ 2, 2 }) };
+	int id_screen = 0;
 
 	while (!WindowShouldClose()) {
-		screen->logic(GetFrameTime());
+		screens[id_screen]->logic(GetFrameTime());
 
 		BeginDrawing();
 		ClearBackground(Graphics::Points::GetColorFon());
-		screen->draw({ 0, 0, 500, 500 });
+
+		screens[id_screen]->draw({ 0, (float)GetScreenHeight() / Screens::y_button, (float)GetScreenWidth(), (float)GetScreenHeight() * (1 - 1.0f / Screens::y_button)});
+		
+		for (int i = 0; i < screens.size(); ++i) {
+			if (GuiButton({ i * GetScreenWidth() / (float)screens.size(), 0, GetScreenWidth() / (float)screens.size(), (float)GetScreenHeight() / Screens::y_button }, screens[i]->name.c_str())) {
+				id_screen = i;
+			}
+		}
+
 		EndDrawing();
 	}
 
-
-	delete screen;
+	for (int i = 0; i < screens.size(); ++i)
+		delete screens[i];
 	return 0;
 }
