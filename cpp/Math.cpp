@@ -29,6 +29,10 @@ namespace See3DLine::Math {
 	}
 
 	// Vector2
+	Vector2 Vector2::for_number(float num) {
+		return { num, num };
+	}
+
 	Vector2 Vector2::operator+(Vector2 vec) {
 		return { x + vec.x, y + vec.y };
 	}

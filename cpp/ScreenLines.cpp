@@ -64,6 +64,8 @@ namespace See3DLine {
 				}
 				SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
 
+				size_see = Math::Vector2::for_number(std::max(0.01f, size_see.x - GetMouseWheelMove() / 10));
+
 				if (IsKeyPressed(KeyboardKey::KEY_ESCAPE)) {
 					ShowCursor();
 
@@ -78,6 +80,7 @@ namespace See3DLine {
 			else {
 				if (GuiButton({ GetScreenWidth() - MeasureText("reset", 20) - 5.0f, GetScreenHeight() - 25.0f, (float)MeasureText("reset", 20), 20}, "reset")) {
 					Points::reset_camera();
+					size_see = { 3, 3 };
 				}
 
 				if (IsMouseButtonPressed(MouseButton::MOUSE_BUTTON_LEFT) && GetMousePosition().y >= GetScreenHeight() / y_button && !CheckCollisionPointRec(GetMousePosition(), { GetScreenWidth() - MeasureText("reset", 20) - 5.0f, GetScreenHeight() - 25.0f, (float)MeasureText("reset", 20), 20 })) {
