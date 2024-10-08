@@ -5,16 +5,20 @@
 namespace See3DLine {
 	namespace Screens {
 		class ScreenSettings : public Screen {
+			char* name;
+
 		public:
-			ScreenSettings() : Screen("Settings") {}
+			ScreenSettings();
+
+			~ScreenSettings();
 
 			void draw(Rectangle rec);
 
 			void logic(float delta);
 
-			void load(std::string name);
+			void load();
 
-			void save(std::string name);
+			void save();
 		};
 	}
 }

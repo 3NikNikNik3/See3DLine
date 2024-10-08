@@ -15,6 +15,10 @@ int main() {
 	SetTargetFPS(60);
 	SetExitKey(KeyboardKey::KEY_TAB);
 
+	Font font = GetFontDefault();
+	font.baseSize = 8;
+	GuiSetFont(font);
+
 	std::vector<Screens::Screen*> screens = { new Screens::ScreenLine({ 2, 2 }), new Screens::ScreenSettings() };
 	int id_screen = 0;
 
