@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include "raylib.h"
 
 #include "Math.hpp"
@@ -9,10 +10,14 @@ using namespace See3DLine::Math;
 
 namespace See3DLine {
 	namespace Graphics {
+		struct Line;
+
 		struct Point
 		{
-			Math::Vector3 vec;
+			Math::Vector3 vec, new_pos;
 			char* name;
+
+			std::list<Line*> lines;
 
 			Point(Math::Vector3 vec, char* name);
 
@@ -23,7 +28,7 @@ namespace See3DLine {
 
 		struct Line
 		{
-			int first, second;
+			std::pair<Point*, Point*> points;
 
 			char* name_0, * name_1;
 
@@ -39,7 +44,7 @@ namespace See3DLine {
 
 			void close();
 
-			void apply(std::vector<Point*>& res);
+			void updata();
 
 			bool is_equally(char* a, char* b);
 

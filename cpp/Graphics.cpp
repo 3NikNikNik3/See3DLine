@@ -15,7 +15,7 @@ namespace See3DLine::Graphics {
 	}
 
 	// Line
-	Line::Line(char* name_0, char* name_1) : name_0(name_0), name_1(name_1), first(-1), second(-1) {}
+	Line::Line(char* name_0, char* name_1) : name_0(name_0), name_1(name_1), points({ nullptr, nullptr }) {}
 
 	Line::~Line() {
 		delete[] name_0, name_1;
@@ -47,15 +47,23 @@ namespace See3DLine::Graphics {
 			//! It is bad and slow (fix it in the future)
 			for (int i = 0; i < ls.size(); ++i) {
 				for (int j = 0; j < ps.size(); ++j)
-					if (is_equally(ls[i]->name_0, ps[j]->name))
-						ls[i]->first = j;
-					else if (is_equally(ls[i]->name_1, ps[j]->name))
-						ls[i]->second = j;
-				if (ls[i]->first == -1 || ls[i]->second == -1)
+					if (is_equally(ls[i]->name_0, ps[j]->name)) {
+						ls[i]->points.first = ps[j];
+						ps[j]->lines.push_front(ls[i]);
+					}
+					else if (is_equally(ls[i]->name_1, ps[j]->name)) {
+						ls[i]->points.second = ps[j];
+						ps[j]->lines.push_front(ls[i]);
+					}
+				if (ls[i]->points.first == nullptr || ls[i]->points.second == nullptr)
 					return false;
 			}
 
+			for (int i = 0; i < points.size(); ++i)
+				delete points[i];
 			points.clear();
+			for (int i = 0; i < lines.size(); ++i)
+				delete lines[i];
 			lines.clear();
 
 			points = ps;
@@ -71,13 +79,11 @@ namespace See3DLine::Graphics {
 			delete ang_xy, ang_xz;
 		}
 
-		void Points::apply(std::vector<Point*>& res) {
-			res.resize(points.size());
-
+		void Points::updata() {
 			Math::Matrix rotate = *ang_xz * see_rev * *ang_xy;
 
-			for (int i = 0; i < res.size(); ++i)
-				res[i] = new Point{ rotate.run(points[i]->vec - pos), copy(points[i]->name) };
+			for (int i = 0; i < points.size(); ++i)
+				points[i]->new_pos = rotate.run(points[i]->vec - pos);
 		}
 
 		void Points::reset_camera() {
@@ -101,17 +107,12 @@ namespace See3DLine::Graphics {
 		}
 
 		void draw(Rectangle rec, Math::Vector2 size) {
-			std::vector<Point*> new_points;
-
-			apply(new_points);
+			updata();
 
 			for (int i = 0; i < lines.size(); ++i)
-				DrawLine((new_points[lines[i]->first]->vec.x / size.x + 0.5) * rec.width + rec.x, (0.5 - new_points[lines[i]->first]->vec.y / size.y) * rec.height + rec.y,
-					(new_points[lines[i]->second]->vec.x / size.x + 0.5) * rec.width + rec.x, (0.5 - new_points[lines[i]->second]->vec.y / size.y) * rec.height + rec.y,
+				DrawLine((lines[i]->points.first->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.first->new_pos.y / size.y) * rec.height + rec.y,
+					(lines[i]->points.second->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.second->new_pos.y / size.y) * rec.height + rec.y,
 					{ 0, 0, 0, 255 });
-
-			for (int i = 0; i < new_points.size(); ++i)
-				delete new_points[i];
 		}
 
 		Math::Matrix*& GetAngXZ() { return ang_xz; }
