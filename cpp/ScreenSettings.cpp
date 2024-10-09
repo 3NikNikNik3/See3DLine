@@ -9,6 +9,9 @@ namespace See3DLine {
 		}
 
 		void ScreenSettings::draw(Rectangle rec) {
+			if (timer_error <= 0.5)
+				DrawRectangleRec(rec, { 255, 0, 0, 255 });
+
 			GuiTextBox({ rec.x + rec.width / 3 + 5, rec.y + 5, rec.width / 3 - 10, 40 }, name, 50, true);
 			if (GuiButton({ rec.x + 5, rec.y + 5, rec.width / 3 - 10, 40 }, "Load")) {
 				load();
@@ -22,15 +25,24 @@ namespace See3DLine {
 		}
 
 		void ScreenSettings::logic(float delta) {
-
+			if (timer_error <= 0.5)
+				timer_error += delta;
 		}
 
 		void ScreenSettings::load() {
-
+			error();
 		}
 
 		void ScreenSettings::save() {
+			error();
+		}
 
+		void ScreenSettings::error() {
+			timer_error = 0;
+		}
+
+		bool ScreenSettings::can_quit() {
+			return true;
 		}
 	}
 }

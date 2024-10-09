@@ -19,6 +19,8 @@ namespace See3DLine {
 			virtual void draw(Rectangle rec) = 0;
 
 			virtual void logic(float delta) = 0;
+
+			virtual bool can_quit() { return true; };
 		};
 	}
 }

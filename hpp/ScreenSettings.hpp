@@ -7,6 +7,8 @@ namespace See3DLine {
 		class ScreenSettings : public Screen {
 			char* name;
 
+			float timer_error = 1;
+
 		public:
 			ScreenSettings();
 
@@ -19,6 +21,10 @@ namespace See3DLine {
 			void load();
 
 			void save();
+
+			void error();
+
+			bool can_quit();
 		};
 	}
 }
