@@ -2,12 +2,21 @@
 
 #include "Screen.hpp"
 
+#include "Graphics.hpp"
+
 namespace See3DLine {
 	namespace Screens {
 		class ScreenSettings : public Screen {
 			char* name;
 
 			float timer_error = 1;
+
+			Vector2* scroll_points;
+			Rectangle* view_points;
+
+			bool name_file_edit = false;
+
+			std::vector<std::vector<bool>> points_edit;
 
 		public:
 			ScreenSettings();

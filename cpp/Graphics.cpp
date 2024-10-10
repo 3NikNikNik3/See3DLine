@@ -14,6 +14,23 @@ namespace See3DLine::Graphics {
 		return { vec, Points::copy(name) };
 	}
 
+	void Point::delete_line() {
+		for (std::list<Line*>::iterator i = lines.begin(); i != lines.end(); ++i) {
+			if ((*i)->points.first == this)
+				(*i)->points.first = nullptr;
+			else
+				(*i)->points.second = nullptr;
+		}
+	}
+
+	void Point::add_me(std::vector<Line*>& arr) {
+		for (int i = 0; i < arr.size(); ++i)
+			if (arr[i]->points.first == nullptr && Points::is_equally(arr[i]->name_0, name))
+				arr[i]->points.first = this;
+			else if (arr[i]->points.second == nullptr && Points::is_equally(arr[i]->name_1, name))
+				arr[i]->points.second = this;
+	}
+
 	// Line
 	Line::Line(char* name_0, char* name_1) : name_0(name_0), name_1(name_1), points({ nullptr, nullptr }) {}
 
@@ -106,7 +123,7 @@ namespace See3DLine::Graphics {
 			return ans;
 		}
 
-		void draw(Rectangle rec, Math::Vector2 size) {
+		void draw(Rectangle rec, Vector2 size) {
 			updata();
 
 			for (int i = 0; i < lines.size(); ++i)
@@ -122,6 +139,10 @@ namespace See3DLine::Graphics {
 		Math::Vector3& GetPos() { return pos; }
 
 		Math::Matrix GetAng() { return *ang_xz * *ang_xy; }
+
+		std::vector<Point*>& GetPoints() { return points; }
+
+		std::vector<Line*>& GetLines() { return lines; }
 
 		Color& GetColorFon() { return color_fon; }
 	}

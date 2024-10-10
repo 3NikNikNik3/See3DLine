@@ -24,6 +24,10 @@ namespace See3DLine {
 			~Point();
 
 			Point copy();
+
+			void delete_line();
+
+			void add_me(std::vector<Line*>& arr);
 		};
 
 		struct Line
@@ -50,7 +54,7 @@ namespace See3DLine {
 
 			char* copy(char* arr);
 
-			void draw(Rectangle rec, Math::Vector2 size);
+			void draw(Rectangle rec, Vector2 size);
 
 			Math::Matrix*& GetAngXZ();
 
@@ -59,6 +63,10 @@ namespace See3DLine {
 			Math::Vector3& GetPos();
 
 			Math::Matrix GetAng();
+
+			std::vector<Point*>& GetPoints();
+
+			std::vector<Line*>& GetLines();
 
 			Color& GetColorFon();
 		}

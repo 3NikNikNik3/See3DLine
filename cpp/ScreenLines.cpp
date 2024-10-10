@@ -4,16 +4,16 @@ using namespace See3DLine::Graphics;
 
 namespace See3DLine {
 	namespace Screens {
-		ScreenLine::ScreenLine(Math::Vector2 size_see) : Screen("See"), size_see(size_see), move_now(false), timer(2), start_size_see(size_see) {
+		ScreenLine::ScreenLine(Vector2 size_see) : Screen("See"), size_see(size_see), move_now(false), timer(2), start_size_see(size_see) {
 			Graphics::Points::init(std::vector<Graphics::Point*>{
 					new Graphics::Point({ 0, 0, 0 }, new char[2] {'A', '\0'}),
-					new Graphics::Point({ 0, 0, 0.5 }, new char[2] {'B', '\0'}),
-					new Graphics::Point({ 0.5, 0, 0.5 }, new char[2] {'C', '\0'}),
-					new Graphics::Point({ 0.5, 0, 0 }, new char[2] {'D', '\0'}),
-					new Graphics::Point({ 0, 0.5, 0 }, new char[3] {'A', '1', '\0'}),
-					new Graphics::Point({ 0, 0.5, 0.5 }, new char[3] {'B', '1', '\0'}),
-					new Graphics::Point({ 0.5, 0.5, 0.5 }, new char[3] {'C', '1', '\0'}),
-					new Graphics::Point({ 0.5, 0.5, 0 }, new char[3] {'D', '1', '\0'}),
+					new Graphics::Point({ 0, 0, 1 }, new char[2] {'B', '\0'}),
+					new Graphics::Point({ 1, 0, 1 }, new char[2] {'C', '\0'}),
+					new Graphics::Point({ 1, 0, 0 }, new char[2] {'D', '\0'}),
+					new Graphics::Point({ 0, 1, 0 }, new char[3] {'A', '1', '\0'}),
+					new Graphics::Point({ 0, 1, 1 }, new char[3] {'B', '1', '\0'}),
+					new Graphics::Point({ 1, 1, 1 }, new char[3] {'C', '1', '\0'}),
+					new Graphics::Point({ 1, 1, 0 }, new char[3] {'D', '1', '\0'}),
 			}, std::vector<Graphics::Line*>{
 					new Graphics::Line(new char[2] {'A', '\0'}, new char[2] {'B', '\0'}),
 					new Graphics::Line(new char[2] {'B', '\0'}, new char[2] {'C', '\0'}),
@@ -32,7 +32,7 @@ namespace See3DLine {
 		}
 
 		void ScreenLine::draw(Rectangle rec) {
-			Math::Vector2 old_pos = { rec.x, rec.y };
+			Vector2 old_pos = { rec.x, rec.y };
 			if (rec.width < rec.height) {
 				rec.y += (rec.height - rec.width) / 2;
 			}
@@ -73,7 +73,8 @@ namespace See3DLine {
 				}
 				SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
 
-				size_see = Math::Vector2::for_number(std::max(0.11f, size_see.x - GetMouseWheelMove() / 10));
+				float new_size_see = std::max(0.11f, size_see.x - GetMouseWheelMove() / 10);
+				size_see = { new_size_see , new_size_see };
 
 				if (IsKeyPressed(KeyboardKey::KEY_ESCAPE)) {
 					ShowCursor();

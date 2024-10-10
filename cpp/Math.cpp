@@ -28,27 +28,6 @@ namespace See3DLine::Math {
 		return sqrt(x * x + y * y + z * z);
 	}
 
-	// Vector2
-	Vector2 Vector2::for_number(float num) {
-		return { num, num };
-	}
-
-	Vector2 Vector2::operator+(Vector2 vec) {
-		return { x + vec.x, y + vec.y };
-	}
-
-	Vector2 Vector2::operator-() {
-		return { -x, -y };
-	}
-
-	Vector2 Vector2::operator-(Vector2 vec) {
-		return { x - vec.x, y - vec.y };
-	}
-
-	double Vector2::len() {
-		return sqrt(x * x + y * y);
-	}
-
 	// Matrix
 	Matrix::Matrix(float arr[3][3]) : i({ arr[0][0], arr[1][0], arr[2][0] }), j({ arr[0][1], arr[1][1], arr[2][1] }), k({ arr[0][2], arr[1][2], arr[2][2] }) {}
 

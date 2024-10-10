@@ -23,25 +23,6 @@ namespace See3DLine {
 			double len();
 		};
 
-		struct Vector2
-		{
-			float x, y;
-
-			Vector2(float x = 0, float y = 0) : x(x), y(y) {}
-
-			static Vector2 for_number(float num);
-
-			static Vector2 Zero;
-
-			Vector2 operator+(Vector2 vec);
-
-			Vector2 operator-(Vector2 vec);
-
-			Vector2 operator-();
-
-			double len();
-		};
-
 		// It has little math's matrix, but it is comfortable!
 		struct Matrix
 		{

@@ -24,7 +24,7 @@ int main() {
 
 	while (!WindowShouldClose()) {
 		for (int i = 0; i < screens.size(); ++i) {
-			if (IsKeyPressed(KeyboardKey::KEY_ONE + i) && screens[id_screen]->can_quit()) {
+			if (IsKeyPressed(KeyboardKey::KEY_F1 + i) && screens[id_screen]->can_quit()) {
 				id_screen = i;
 			}
 		}
