@@ -6,23 +6,23 @@ namespace See3DLine {
 	namespace Screens {
 		ScreenLine::ScreenLine(Vector2 size_see) : Screen("See"), size_see(size_see), move_now(false), timer(2), start_size_see(size_see) {
 			Graphics::Points::init(std::vector<Graphics::Point*>{
-					new Graphics::Point({ 0, 0, 0 }, new char[2] {'A', '\0'}),
-					new Graphics::Point({ 0, 0, 1 }, new char[2] {'B', '\0'}),
-					new Graphics::Point({ 1, 0, 1 }, new char[2] {'C', '\0'}),
-					new Graphics::Point({ 1, 0, 0 }, new char[2] {'D', '\0'}),
-					new Graphics::Point({ 0, 1, 0 }, new char[3] {'A', '1', '\0'}),
-					new Graphics::Point({ 0, 1, 1 }, new char[3] {'B', '1', '\0'}),
-					new Graphics::Point({ 1, 1, 1 }, new char[3] {'C', '1', '\0'}),
-					new Graphics::Point({ 1, 1, 0 }, new char[3] {'D', '1', '\0'}),
+					new Graphics::Point({ 0, 0, 0 }, "A"),
+					new Graphics::Point({ 0, 0, 1 }, "B"),
+					new Graphics::Point({ 1, 0, 1 }, "C"),
+					new Graphics::Point({ 1, 0, 0 }, "D"),
+					new Graphics::Point({ 0, 1, 0 }, "A1"),
+					new Graphics::Point({ 0, 1, 1 }, "B1"),
+					new Graphics::Point({ 1, 1, 1 }, "C1"),
+					new Graphics::Point({ 1, 1, 0 }, "D1"),
 			}, std::vector<Graphics::Line*>{
-					new Graphics::Line(new char[2] {'A', '\0'}, new char[2] {'B', '\0'}),
-					new Graphics::Line(new char[2] {'B', '\0'}, new char[2] {'C', '\0'}),
-					new Graphics::Line(new char[2] {'C', '\0'}, new char[2] {'D', '\0'}),
-					new Graphics::Line(new char[2] {'D', '\0'}, new char[2] {'A', '\0'}),
-					new Graphics::Line(new char[2] {'A', '\0'}, new char[3] {'A', '1', '\0'}),
-					new Graphics::Line(new char[2] {'B', '\0'}, new char[3] {'B', '1', '\0'}),
-					new Graphics::Line(new char[2] {'C', '\0'}, new char[3] {'C', '1', '\0'}),
-					new Graphics::Line(new char[2] {'D', '\0'}, new char[3] {'D', '1', '\0'}),
+					new Graphics::Line("A", "B"),
+					new Graphics::Line("B", "C"),
+					new Graphics::Line("C", "D"),
+					new Graphics::Line("D", "A"),
+					new Graphics::Line("A", "A1"),
+					new Graphics::Line("B", "B1"),
+					new Graphics::Line("C", "C1"),
+					new Graphics::Line("D", "D1"),
 			});
 			Graphics::Points::reset_camera();
 		}

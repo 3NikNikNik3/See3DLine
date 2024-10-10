@@ -4,14 +4,12 @@
 
 namespace See3DLine::Graphics {
 	// Point
-	Point::Point(Math::Vector3 vec = Math::Vector3(), char* name = new char[0] {}) : vec(vec), name(name) {}
+	Point::Point(Math::Vector3 vec = Math::Vector3(), std::string name = new char[0] {}) : vec(vec), name(name) {}
 
-	Point::~Point() {
-		delete[] name;
-	}
+	Point::~Point() { }
 
 	Point Point::copy() {
-		return { vec, Points::copy(name) };
+		return { vec, name };
 	}
 
 	void Point::delete_line() {
@@ -21,26 +19,26 @@ namespace See3DLine::Graphics {
 			else
 				(*i)->points.second = nullptr;
 		}
+		lines.clear();
 	}
 
 	void Point::add_me(std::vector<Line*>& arr) {
 		for (int i = 0; i < arr.size(); ++i)
-			if (arr[i]->points.first == nullptr && Points::is_equally(arr[i]->name_0, name)) {
+			if (arr[i]->points.first == nullptr && arr[i]->name_0 == name) {
 				arr[i]->points.first = this;
 				lines.push_front(arr[i]);
 			}
-			else if (arr[i]->points.second == nullptr && Points::is_equally(arr[i]->name_1, name)) {
+			else if (arr[i]->points.second == nullptr && arr[i]->name_1 == name) {
 				arr[i]->points.second = this;
+				Points::GetLines();
 				lines.push_front(arr[i]);
 			}
 	}
 
 	// Line
-	Line::Line(char* name_0, char* name_1) : name_0(name_0), name_1(name_1), points({ nullptr, nullptr }) {}
+	Line::Line(std::string name_0, std::string name_1) : name_0(name_0), name_1(name_1), points({ nullptr, nullptr }) {}
 
-	Line::~Line() {
-		delete[] name_0, name_1;
-	}
+	Line::~Line() { }
 
 	namespace Points {
 		std::vector<Point*> points;
@@ -52,15 +50,6 @@ namespace See3DLine::Graphics {
 
 		Color color_fon = { 255, 255, 255, 255 };
 
-		bool Points::is_equally(char* a, char* b) {
-			if (strlen(a) != strlen(b))
-				return false;
-			for (int i = 0; i < strlen(a); ++i)
-				if (a[i] != b[i])
-					return false;
-			return true;
-		}
-
 		bool Points::init(std::vector<Point*>& ps, std::vector<Line*>& ls) {
 			if (ps.size() > 255 || ls.size() > 255)
 				return false;
@@ -68,11 +57,11 @@ namespace See3DLine::Graphics {
 			//! It is bad and slow (fix it in the future)
 			for (int i = 0; i < ls.size(); ++i) {
 				for (int j = 0; j < ps.size(); ++j)
-					if (is_equally(ls[i]->name_0, ps[j]->name)) {
+					if (ls[i]->name_0 == ps[j]->name) {
 						ls[i]->points.first = ps[j];
 						ps[j]->lines.push_front(ls[i]);
 					}
-					else if (is_equally(ls[i]->name_1, ps[j]->name)) {
+					else if (ls[i]->name_1 == ps[j]->name) {
 						ls[i]->points.second = ps[j];
 						ps[j]->lines.push_front(ls[i]);
 					}
@@ -120,13 +109,6 @@ namespace See3DLine::Graphics {
 			pos = { 0, 0, 0 };
 		}
 
-		char* Points::copy(char* arr) {
-			char* ans = new char[sizeof(arr)];
-			for (int i = 0; i < sizeof(ans); ++i)
-				ans[i] = arr[i];
-			return ans;
-		}
-
 		void draw(Rectangle rec, Vector2 size) {
 			updata();
 
@@ -134,6 +116,14 @@ namespace See3DLine::Graphics {
 				DrawLine((lines[i]->points.first->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.first->new_pos.y / size.y) * rec.height + rec.y,
 					(lines[i]->points.second->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.second->new_pos.y / size.y) * rec.height + rec.y,
 					{ 0, 0, 0, 255 });
+		}
+
+		int Points::CountPoints(std::string what) {
+			int ans = 0;
+			for (int i = 0; i < points.size(); ++i)
+				if (points[i]->name == what)
+					++ans;
+			return ans;
 		}
 
 		Math::Matrix*& GetAngXZ() { return ang_xz; }

@@ -4,12 +4,12 @@ using namespace See3DLine::Graphics;
 
 namespace See3DLine {
 	namespace Screens {
-		ScreenSettings::ScreenSettings() : Screen("Settings"), name(new char[10] {'F', 'i', 'l', 'e', ' ', 'n', 'a', 'm', 'e', '\0'}), scroll_points(new Vector2{ 0, 0 }), view_points(new Rectangle()) {
+		ScreenSettings::ScreenSettings() : Screen("Settings"), name("File's name"), scroll_points(new Vector2{0, 0}), view_points(new Rectangle()) {
 			points_edit.resize(Points::GetPoints().size(), {false, false, false, false});
 		}
 
 		ScreenSettings::~ScreenSettings() {
-			delete name, scroll_points, view_points;
+			delete scroll_points, view_points;
 		}
 
 		int get_size_font(const char* text, int max_size) {
@@ -24,9 +24,13 @@ namespace See3DLine {
 
 			// file load/save
 
-			if (GuiTextBox({ rec.x + rec.width / 3 + 5, rec.y + 5, rec.width / 3 - 10, 40 }, name, 50, name_file_edit)) {
+			char* name_file = name.data();
+			if (GuiTextBox({ rec.x + rec.width / 3 + 5, rec.y + 5, rec.width / 3 - 10, 40 }, name_file, 50, name_file_edit)) {
 				name_file_edit = !name_file_edit;
 			}
+			if (strlen(name_file) != name.size())
+				name = std::string(name_file);
+
 			if (GuiButton({ rec.x + 5, rec.y + 5, rec.width / 3 - 10, 40 }, "Load")) {
 				load();
 			}
@@ -48,7 +52,12 @@ namespace See3DLine {
 			// +
 			int size_add = 24;
 			if (GuiButton({ rec.x + rec.width / 2 - size_add, rec.y, (float)size_add, (float)size_add }, "+")) {
-				Points::GetPoints().push_back(new Point{ Math::Vector3(0, 0, 0), new char[2] {'A', '\0'} });
+				std::string new_name = "S";
+				while (Points::CountPoints(new_name) != 0) {
+					name += '\'';
+				}
+
+				Points::GetPoints().push_back(new Point{ Math::Vector3(0, 0, 0), new_name });
 				points_edit.push_back({false, false, false, false});
 				Points::GetPoints()[Points::GetPoints().size() - 1]->add_me(Points::GetLines());
 			}
@@ -71,21 +80,36 @@ namespace See3DLine {
 
 					// X
 					*val = (int)Points::GetPoints()[i]->vec.x;
-					if (GuiValueBox({ 5 + view_points->x, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 + 5, 30 }, "", val, 0, 254, points_edit[i][0]))
+					if (GuiValueBox({ 5 + view_points->x, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 - 5, 30 }, "", val, 0, 254, points_edit[i][0]))
 						points_edit[i][0] = !points_edit[i][0];
 					Points::GetPoints()[i]->vec.x = *val;
 
 					// Y
 					*val = (int)Points::GetPoints()[i]->vec.y;
-					if (GuiValueBox({ 5 + view_points->x + view_points->width / 4, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 + 5, 30 }, "", val, 0, 254, points_edit[i][1]))
+					if (GuiValueBox({ 5 + view_points->x + view_points->width / 4, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 - 5, 30 }, "", val, 0, 254, points_edit[i][1]))
 						points_edit[i][1] = !points_edit[i][1];
 					Points::GetPoints()[i]->vec.y = *val;
 
 					// Z
 					*val = (int)Points::GetPoints()[i]->vec.z;
-					if (GuiValueBox({ 5 + view_points->x + view_points->width / 2, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 + 5, 30 }, "", val, 0, 254, points_edit[i][2]))
+					if (GuiValueBox({ 5 + view_points->x + view_points->width / 2, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 - 5, 30 }, "", val, 0, 254, points_edit[i][2]))
 						points_edit[i][2] = !points_edit[i][2];
 					Points::GetPoints()[i]->vec.z = *val;
+
+					// Name
+					char* old_name = Points::GetPoints()[i]->name.data();
+					if (GuiTextBox({ 5 + view_points->x + 3 * view_points->width / 4, scroll_points->y + view_points->y + 40 * i + 5 + y_up_text, view_points->width / 4 - 5, 30 }, old_name, 5, points_edit[i][3]))
+						points_edit[i][3] = !points_edit[i][3];
+					if (Points::GetPoints()[i]->name.size() != strlen(old_name)) {
+						// Change point's name
+						Points::GetPoints()[i]->name = std::string(old_name);
+						while (Points::CountPoints(Points::GetPoints()[i]->name) != 1) {
+							Points::GetPoints()[i]->name += '\'';
+						}
+
+						Points::GetPoints()[i]->delete_line();
+						Points::GetPoints()[i]->add_me(Points::GetLines());
+					}
 				}
 			}
 

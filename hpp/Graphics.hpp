@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <list>
+#include <string>
 #include "raylib.h"
 
 #include "Math.hpp"
@@ -15,11 +16,11 @@ namespace See3DLine {
 		struct Point
 		{
 			Math::Vector3 vec, new_pos;
-			char* name;
+			std::string name;
 
 			std::list<Line*> lines;
 
-			Point(Math::Vector3 vec, char* name);
+			Point(Math::Vector3 vec, std::string name);
 
 			~Point();
 
@@ -34,9 +35,9 @@ namespace See3DLine {
 		{
 			std::pair<Point*, Point*> points;
 
-			char* name_0, * name_1;
+			std::string name_0, name_1;
 
-			Line(char* name_0, char* name_1);
+			Line(std::string name_0, std::string name_1);
 
 			~Line();
 		};
@@ -49,10 +50,6 @@ namespace See3DLine {
 			void close();
 
 			void updata();
-
-			bool is_equally(char* a, char* b);
-
-			char* copy(char* arr);
 
 			void draw(Rectangle rec, Vector2 size);
 
@@ -67,6 +64,8 @@ namespace See3DLine {
 			std::vector<Point*>& GetPoints();
 
 			std::vector<Line*>& GetLines();
+
+			int CountPoints(std::string what);
 
 			Color& GetColorFon();
 		}

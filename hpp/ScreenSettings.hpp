@@ -7,7 +7,7 @@
 namespace See3DLine {
 	namespace Screens {
 		class ScreenSettings : public Screen {
-			char* name;
+			std::string name;
 
 			float timer_error = 1;
 
