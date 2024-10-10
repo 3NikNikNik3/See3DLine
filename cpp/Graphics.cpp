@@ -25,10 +25,14 @@ namespace See3DLine::Graphics {
 
 	void Point::add_me(std::vector<Line*>& arr) {
 		for (int i = 0; i < arr.size(); ++i)
-			if (arr[i]->points.first == nullptr && Points::is_equally(arr[i]->name_0, name))
+			if (arr[i]->points.first == nullptr && Points::is_equally(arr[i]->name_0, name)) {
 				arr[i]->points.first = this;
-			else if (arr[i]->points.second == nullptr && Points::is_equally(arr[i]->name_1, name))
+				lines.push_front(arr[i]);
+			}
+			else if (arr[i]->points.second == nullptr && Points::is_equally(arr[i]->name_1, name)) {
 				arr[i]->points.second = this;
+				lines.push_front(arr[i]);
+			}
 	}
 
 	// Line
