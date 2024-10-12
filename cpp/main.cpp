@@ -37,7 +37,7 @@ int main() {
 		screens[id_screen]->draw({ 0, (float)GetScreenHeight() / Screens::y_button, (float)GetScreenWidth(), (float)GetScreenHeight() * (1 - 1.0f / Screens::y_button)});
 		
 		for (int i = 0; i < screens.size(); ++i) {
-			if (GuiButton({ i * GetScreenWidth() / (float)screens.size(), 0, GetScreenWidth() / (float)screens.size(), (float)GetScreenHeight() / Screens::y_button }, screens[i]->name.c_str())) {
+			if (GuiButton({ i * GetScreenWidth() / (float)screens.size(), 0, GetScreenWidth() / (float)screens.size(), (float)GetScreenHeight() / Screens::y_button }, screens[i]->name.c_str()) && screens[id_screen]->can_quit()) {
 				id_screen = i;
 			}
 		}

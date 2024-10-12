@@ -7,6 +7,9 @@ namespace See3DLine {
 		ScreenSettings::ScreenSettings() : Screen("Settings"), name("File's name"), scroll_points(new Vector2{0, 0}), view_points(new Rectangle()), scroll_lines(new Vector2{0, 0}), view_lines(new Rectangle()){
 			points_edit.resize(Points::GetPoints().size(), {false, false, false, false});
 			lines_edit.resize(Points::GetLines().size(), { false, false });
+
+			if (!std::filesystem::exists("shapes"))
+				std::filesystem::create_directory("shapes");
 		}
 
 		ScreenSettings::~ScreenSettings() {
@@ -21,9 +24,6 @@ namespace See3DLine {
 		}
 
 		void ScreenSettings::draw(Rectangle rec) {
-			if (timer_error <= 0.5)
-				DrawRectangleRec(rec, { 255, 0, 0, 255 });
-
 			// file load/save
 
 			char* name_file = name.data();
@@ -155,8 +155,7 @@ namespace See3DLine {
 						Points::GetLines()[i]->name_0 = std::string(old_name);
 
 						// change name 0
-						if (Points::GetLines()[i]->points.first != nullptr)
-							Points::GetLines()[i]->points.first->delete_line(Points::GetLines()[i]);
+						Points::GetLines()[i]->delete_0();
 						Points::GetLines()[i]->updata_0(Points::GetPoints());
 					}
 
@@ -169,8 +168,7 @@ namespace See3DLine {
 						Points::GetLines()[i]->name_1 = std::string(old_name);
 
 						// change name 1
-						if (Points::GetLines()[i]->points.second != nullptr)
-						Points::GetLines()[i]->points.second->delete_line(Points::GetLines()[i]);
+						Points::GetLines()[i]->delete_1();
 						Points::GetLines()[i]->updata_1(Points::GetPoints());
 					}
 
@@ -181,10 +179,8 @@ namespace See3DLine {
 			}
 
 			if (delete_line != -1) {
-				if (Points::GetLines()[delete_line]->points.first != nullptr)
-					Points::GetLines()[delete_line]->points.first->delete_line(Points::GetLines()[delete_line]);
-				if (Points::GetLines()[delete_line]->points.second != nullptr)
-				Points::GetLines()[delete_line]->points.second->delete_line(Points::GetLines()[delete_line]);
+				Points::GetLines()[delete_line]->delete_0();
+				Points::GetLines()[delete_line]->delete_1();
 
 				Points::GetLines().erase(Points::GetLines().begin() + delete_line);
 				lines_edit.erase(lines_edit.begin() + delete_line);
@@ -192,7 +188,9 @@ namespace See3DLine {
 
 			delete val;
 
-			//DrawRectangleRec({5 + view_points->x, scroll_points->y + view_points->y, 100, 100}, {255, 0, 0, 255});
+			// Error
+			if (timer_error <= 0.5)
+				DrawRectangleRec({0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, {255, 0, 0, 100});
 		}
 
 		void ScreenSettings::logic(float delta) {
@@ -213,6 +211,12 @@ namespace See3DLine {
 		}
 
 		bool ScreenSettings::can_quit() {
+			for (int i = 0; i < Points::GetLines().size(); ++i) {
+				if (Points::GetLines()[i]->points.first == nullptr || Points::GetLines()[i]->points.second == nullptr) {
+					error();
+					return false;
+				}
+			}
 			return true;
 		}
 	}

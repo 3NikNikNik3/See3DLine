@@ -46,6 +46,10 @@ namespace See3DLine {
 			void updata_0(std::vector<Point*>& arr);
 
 			void updata_1(std::vector<Point*>& arr);
+
+			void delete_0();
+
+			void delete_1();
 		};
 
 		namespace Points {

@@ -4,6 +4,8 @@
 
 #include "Graphics.hpp"
 
+#include <filesystem>
+
 namespace See3DLine {
 	namespace Screens {
 		class ScreenSettings : public Screen {

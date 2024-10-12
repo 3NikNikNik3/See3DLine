@@ -69,6 +69,20 @@ namespace See3DLine::Graphics {
 		}
 	}
 
+	void Line::delete_0() {
+		if (points.first != nullptr) {
+			points.first->delete_line(this);
+			points.first = nullptr;
+		}
+	}
+
+	void Line::delete_1() {
+		if (points.second != nullptr) {
+			points.second->delete_line(this);
+			points.second = nullptr;
+		}
+	}
+
 	namespace Points {
 		std::vector<Point*> points;
 		std::vector<Line*> lines;
