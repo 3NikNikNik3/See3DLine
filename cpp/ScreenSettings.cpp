@@ -45,6 +45,22 @@ namespace See3DLine {
 			rec.y += 50;
 			rec.height -= 50;
 
+			// Clear all points and lines
+			if (GuiButton({ rec.x + 5, rec.y + 5, rec.width - 10, 35 }, "Delete all")) {
+				for (int i = 0; i < Points::GetPoints().size(); ++i)
+					delete Points::GetPoints()[i];
+				Points::GetPoints().clear();
+
+				for (int i = 0; i < Points::GetLines().size(); ++i)
+					delete Points::GetLines()[i];
+				Points::GetLines().clear();
+
+				points_edit.clear();
+				lines_edit.clear();
+			}
+
+			rec.y += 45;
+
 			// points
 
 			int font_size = get_size_font("NAME", (view_points->width - 35) / 4);
@@ -119,6 +135,7 @@ namespace See3DLine {
 
 			if (delete_point != -1) {
 				Points::GetPoints()[delete_point]->delete_line();
+				delete Points::GetPoints()[delete_point];
 				Points::GetPoints().erase(Points::GetPoints().begin() + delete_point);
 				points_edit.pop_back();
 			}
@@ -184,6 +201,7 @@ namespace See3DLine {
 				Points::GetLines()[delete_line]->delete_0();
 				Points::GetLines()[delete_line]->delete_1();
 
+				delete Points::GetLines()[delete_line];
 				Points::GetLines().erase(Points::GetLines().begin() + delete_line);
 				lines_edit.erase(lines_edit.begin() + delete_line);
 			}
