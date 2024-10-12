@@ -201,19 +201,76 @@ namespace See3DLine {
 		}
 
 		void ScreenSettings::load() {
-			if (can_quit()) {
-				if (std::filesystem::exists("shapes/" + name + ".shape")) {
-					// load file
+			if (std::filesystem::exists("shapes/" + name + ".shape")) {
+				// load file
+
+				std::ifstream fin("shapes/" + name + ".shape");
+
+				std::vector<Point*> points;
+				std::vector<Line*> lines;
+
+				// points
+				unsigned char n = fin.get();
+
+				points.resize(n);
+				for (int i = 0; i < n; ++i) {
+					unsigned char x = fin.get(), y = fin.get(), z = fin.get();
+					std::string name;
+
+					fin >> name; fin.get();
+
+					points[i] = new Point({ (float)x, (float)y, (float)z }, name);
 				}
-				else {
+
+				// lines
+				n = fin.get();
+				lines.resize(n);
+				for (int i = 0; i < n; ++i) {
+					std::string name_0, name_1;
+
+					fin >> name_0 >> name_1; fin.get();
+
+					lines[i] = new Line(name_0, name_1);
+				}
+
+				if (Points::init(points, lines)) {
+					// elso
+					points_edit.resize(points.size(), { false, false, false, false });
+					lines_edit.resize(lines.size(), { false, false });
+				}
+				else
 					error();
-				}
+
+				fin.close();
+			}
+			else {
+				error();
 			}
 		}
 
 		void ScreenSettings::save() {
 			if (can_quit()) {
 				// save file
+
+				std::ofstream fout("shapes/" + name + ".shape");
+
+				// points
+				fout << (unsigned char)Points::GetPoints().size();
+				for (int i = 0; i < Points::GetPoints().size(); ++i) {
+					fout << (unsigned char)Points::GetPoints()[i]->vec.x;
+					fout << (unsigned char)Points::GetPoints()[i]->vec.y;
+					fout << (unsigned char)Points::GetPoints()[i]->vec.z;
+					fout << Points::GetPoints()[i]->name << "\n";
+				}
+
+				// lines
+				fout << (unsigned char)Points::GetLines().size();
+				for (int i = 0; i < Points::GetLines().size(); ++i) {
+					fout << Points::GetLines()[i]->name_0 << "\n";
+					fout << Points::GetLines()[i]->name_1 << "\n";
+				}
+
+				fout.close();
 			}
 		}
 

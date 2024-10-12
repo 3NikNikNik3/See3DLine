@@ -5,6 +5,7 @@
 #include "Graphics.hpp"
 
 #include <filesystem>
+#include <fstream>
 
 namespace See3DLine {
 	namespace Screens {
