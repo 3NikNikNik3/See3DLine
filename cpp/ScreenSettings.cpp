@@ -1,5 +1,7 @@
 #include "hpp/ScreenSettings.hpp"
 
+#include <iostream>
+
 using namespace See3DLine::Graphics;
 
 namespace See3DLine {
@@ -199,11 +201,20 @@ namespace See3DLine {
 		}
 
 		void ScreenSettings::load() {
-			error();
+			if (can_quit()) {
+				if (std::filesystem::exists("shapes/" + name + ".shape")) {
+					// load file
+				}
+				else {
+					error();
+				}
+			}
 		}
 
 		void ScreenSettings::save() {
-			error();
+			if (can_quit()) {
+				// save file
+			}
 		}
 
 		void ScreenSettings::error() {
