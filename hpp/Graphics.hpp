@@ -29,6 +29,8 @@ namespace See3DLine {
 			void delete_line();
 
 			void add_me(std::vector<Line*>& arr);
+
+			void delete_line(Line* line);
 		};
 
 		struct Line
@@ -40,6 +42,10 @@ namespace See3DLine {
 			Line(std::string name_0, std::string name_1);
 
 			~Line();
+
+			void updata_0(std::vector<Point*>& arr);
+
+			void updata_1(std::vector<Point*>& arr);
 		};
 
 		namespace Points {

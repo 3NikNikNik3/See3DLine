@@ -35,10 +35,39 @@ namespace See3DLine::Graphics {
 			}
 	}
 
+	void Point::delete_line(Line* line) {
+		for (std::list<Line*>::iterator i = lines.begin(); i != lines.end(); ++i) {
+			if ((*i) == line) {
+				lines.erase(i);
+				return;
+			}
+		}
+	}
+
 	// Line
 	Line::Line(std::string name_0, std::string name_1) : name_0(name_0), name_1(name_1), points({ nullptr, nullptr }) {}
 
 	Line::~Line() { }
+
+	void Line::updata_0(std::vector<Point*>& arr) {
+		for (int i = 0; i < arr.size(); ++i) {
+			if (name_0 == arr[i]->name) {
+				points.first = arr[i];
+				arr[i]->lines.push_front(this);
+				return;
+			}
+		}
+	}
+
+	void Line::updata_1(std::vector<Point*>& arr) {
+		for (int i = 0; i < arr.size(); ++i) {
+			if (name_1 == arr[i]->name) {
+				points.second = arr[i];
+				arr[i]->lines.push_front(this);
+				return;
+			}
+		}
+	}
 
 	namespace Points {
 		std::vector<Point*> points;

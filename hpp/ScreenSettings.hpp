@@ -11,12 +11,12 @@ namespace See3DLine {
 
 			float timer_error = 1;
 
-			Vector2* scroll_points;
-			Rectangle* view_points;
+			Vector2* scroll_points, *scroll_lines;
+			Rectangle* view_points, *view_lines;
 
 			bool name_file_edit = false;
 
-			std::vector<std::vector<bool>> points_edit;
+			std::vector<std::vector<bool>> points_edit, lines_edit;
 
 		public:
 			ScreenSettings();
