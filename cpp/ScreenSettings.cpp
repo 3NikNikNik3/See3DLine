@@ -157,8 +157,8 @@ namespace See3DLine {
 				Points::GetLines()[Points::GetLines().size() - 1]->updata_1(Points::GetPoints());
 			}
 
-			DrawText("FROM", view_lines->x + view_lines->width / 4 - MeasureText("FROM", font_size), view_lines->y + 5, font_size, BLACK);
-			DrawText("TO", view_lines->x + 3 * view_lines->width / 4 - MeasureText("TO", font_size), view_lines->y + 5, font_size, BLACK);
+			DrawText("FROM", view_lines->x + view_lines->width / 4 - MeasureText("FROM", font_size) / 2, view_lines->y + 5, font_size, BLACK);
+			DrawText("TO", view_lines->x + 3 * view_lines->width / 4 - MeasureText("TO", font_size) / 2, view_lines->y + 5, font_size, BLACK);
 
 			// line's list
 			int delete_line = -1;

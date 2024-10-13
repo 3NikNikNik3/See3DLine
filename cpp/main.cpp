@@ -14,6 +14,7 @@ int main() {
 	InitWindow(500, 500, "See3DLine");
 	SetTargetFPS(60);
 	SetExitKey(KeyboardKey::KEY_TAB);
+	SetWindowMinSize(405, 380);
 
 	Font font = GetFontDefault();
 	font.baseSize = 8;
