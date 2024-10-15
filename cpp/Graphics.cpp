@@ -1,6 +1,8 @@
-#include "hpp/Graphics.hpp"
-
-#include "raylib.h"
+#ifdef INCLUDE_UP
+	#include "../hpp/Graphics.hpp"
+#else
+	#include "hpp/Graphics.hpp"
+#endif
 
 namespace See3DLine::Graphics {
 	// Point
@@ -93,7 +95,7 @@ namespace See3DLine::Graphics {
 
 		Color color_fon = { 255, 255, 255, 255 };
 
-		bool Points::init(std::vector<Point*>& ps, std::vector<Line*>& ls) {
+		bool init(std::vector<Point*>& ps, std::vector<Line*>& ls) {
 			if (ps.size() > 255 || ls.size() > 255)
 				return false;
 
@@ -125,21 +127,21 @@ namespace See3DLine::Graphics {
 			return true;
 		}
 
-		void Points::close() {
+		void close() {
 			for (int i = 0; i < points.size(); ++i)
 				delete points[i];
 			lines.clear();
 			delete ang_xy, ang_xz;
 		}
 
-		void Points::updata() {
+		void updata() {
 			Math::Matrix rotate = *ang_xz * see_rev * *ang_xy;
 
 			for (int i = 0; i < points.size(); ++i)
 				points[i]->new_pos = rotate.run(points[i]->vec - pos);
 		}
 
-		void Points::reset_camera() {
+		void reset_camera() {
 			delete ang_xz, ang_xy;
 			ang_xy = new Math::Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
 			ang_xz = new Math::Matrix({ {1, 0, 0}, {0, 1, 0}, {0, 0, 1} });
@@ -161,7 +163,7 @@ namespace See3DLine::Graphics {
 					{ 0, 0, 0, 255 });
 		}
 
-		int Points::CountPoints(std::string what) {
+		int CountPoints(std::string what) {
 			int ans = 0;
 			for (int i = 0; i < points.size(); ++i)
 				if (points[i]->name == what)

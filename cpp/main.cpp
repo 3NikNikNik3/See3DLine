@@ -1,10 +1,20 @@
-#include "raylib.h"
+#ifndef INCLUDE_UP
+	#include "raylib.h"
 
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
+	#define RAYGUI_IMPLEMENTATION
+	#include "raygui.h"
 
-#include "hpp/ScreenLines.hpp"
-#include "hpp/ScreenSettings.hpp"
+	#include "hpp/ScreenLines.hpp"
+	#include "hpp/ScreenSettings.hpp"
+#else
+	#include "../../raylib/src/raylib.h"
+
+	#define RAYGUI_IMPLEMENTATION
+	#include "../../raylib/src/raygui.h"
+
+	#include "../hpp/ScreenLines.hpp"
+	#include "../hpp/ScreenSettings.hpp"
+#endif
 
 using namespace See3DLine;
 

@@ -3,7 +3,12 @@
 #include <vector>
 #include <list>
 #include <string>
-#include "raylib.h"
+
+#ifdef INCLUDE_UP
+	#include "../../raylib/src/raylib.h"
+#else
+	#include "raylib.h"
+#endif
 
 #include "Math.hpp"
 

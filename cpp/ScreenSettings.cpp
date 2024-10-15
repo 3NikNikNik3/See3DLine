@@ -1,4 +1,14 @@
-#include "hpp/ScreenSettings.hpp"
+#ifdef INCLUDE_UP
+	#include "../hpp/ScreenSettings.hpp"
+#else
+	#include "hpp/ScreenSetting.hpp"
+#endif
+
+#ifdef STRLEN
+	int strlen(char* name){
+		return ((std::string)name).size();
+	}
+#endif
 
 #include <iostream>
 

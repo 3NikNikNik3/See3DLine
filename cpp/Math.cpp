@@ -1,4 +1,8 @@
-#include "hpp/Math.hpp"
+#ifdef INCLUDE_UP
+	#include "../hpp/Math.hpp"
+#else
+	#include "hpp/Math.hpp"
+#endif
 
 namespace See3DLine::Math {
 	// Vector3
@@ -35,7 +39,7 @@ namespace See3DLine::Math {
 		return { matrix.run(i), matrix.run(j), matrix.run(k) };
 	}
 
-	void Matrix::operator*=(Matrix& matrix) {
+	void Matrix::operator*=(Matrix matrix) {
 		Matrix m_ = *this * matrix;
 		i = m_.i;
 		j = m_.j;

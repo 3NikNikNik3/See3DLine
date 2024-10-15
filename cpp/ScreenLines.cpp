@@ -1,11 +1,15 @@
-#include <hpp/ScreenLines.hpp>
+#ifdef INCLUDE_UP
+	#include "../hpp/ScreenLines.hpp"
+#else
+	#include "hpp/ScreenLines.hpp"
+#endif
 
 using namespace See3DLine::Graphics;
 
 namespace See3DLine {
 	namespace Screens {
 		ScreenLine::ScreenLine(Vector2 size_see) : Screen("See"), size_see(size_see), move_now(false), timer(2), start_size_see(size_see) {
-			Graphics::Points::init(std::vector<Graphics::Point*>{
+			std::vector<Graphics::Point*> points{
 					new Graphics::Point({ 0, 0, 0 }, "A"),
 					new Graphics::Point({ 0, 0, 1 }, "B"),
 					new Graphics::Point({ 1, 0, 1 }, "C"),
@@ -14,7 +18,9 @@ namespace See3DLine {
 					new Graphics::Point({ 0, 1, 1 }, "B1"),
 					new Graphics::Point({ 1, 1, 1 }, "C1"),
 					new Graphics::Point({ 1, 1, 0 }, "D1"),
-			}, std::vector<Graphics::Line*>{
+			};
+
+			std::vector<Graphics::Line*> lines{
 					new Graphics::Line("A", "B"),
 					new Graphics::Line("B", "C"),
 					new Graphics::Line("C", "D"),
@@ -23,7 +29,9 @@ namespace See3DLine {
 					new Graphics::Line("B", "B1"),
 					new Graphics::Line("C", "C1"),
 					new Graphics::Line("D", "D1"),
-			});
+			};
+
+			Graphics::Points::init(points, lines);
 			Graphics::Points::reset_camera();
 		}
 
@@ -60,16 +68,18 @@ namespace See3DLine {
 				}
 				else {
 					float ang_x = GetMouseDelta().x / 400 * PI, ang_y = GetMouseDelta().y / 400 * PI;
-					*Points::GetAngXZ() *= Math::Matrix({
+					Math::Matrix q =Math::Matrix({
 						{cos(ang_x), 0, sin(ang_x)},
 						{0, 1, 0},
 						{-sin(ang_x), 0, cos(ang_x)}
 						});
-					*Points::GetAngXY() *= Math::Matrix({
+					*Points::GetAngXZ() *= q;
+					q = Math::Matrix({
 						{1, 0, 0},
 						{0, cos(ang_y), -sin(ang_y)},
 						{0, sin(ang_y), cos(ang_y)}
 						});
+					*Points::GetAngXY() *= q;
 				}
 				SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
 

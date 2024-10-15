@@ -1,8 +1,12 @@
 #pragma once
 
-#include "raylib.h"
-
-#include "raygui.h"
+#ifdef INCLUDE_UP
+	#include "../../raylib/src/raylib.h"
+	#include "../../raylib/src/raygui.h"
+#else
+	#include "raylib.h"
+	#include "raygui.h"
+#endif
 
 #include <string>
 
