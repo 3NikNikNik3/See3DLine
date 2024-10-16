@@ -1,7 +1,7 @@
 #ifdef INCLUDE_UP
 	#include "../hpp/ScreenSettings.hpp"
 #else
-	#include "hpp/ScreenSetting.hpp"
+	#include "hpp/ScreenSettings.hpp"
 #endif
 
 #ifdef STRLEN
@@ -19,6 +19,8 @@ namespace See3DLine {
 		ScreenSettings::ScreenSettings() : Screen("Settings"), name("File's name"), scroll_points(new Vector2{0, 0}), view_points(new Rectangle()), scroll_lines(new Vector2{0, 0}), view_lines(new Rectangle()){
 			points_edit.resize(Points::GetPoints().size(), {false, false, false, false});
 			lines_edit.resize(Points::GetLines().size(), { false, false });
+
+			color_line_edit.resize(Points::GetLines().size(), { false, false, false, false });
 
 			if (!std::filesystem::exists("shapes"))
 				std::filesystem::create_directory("shapes");
@@ -154,9 +156,9 @@ namespace See3DLine {
 			font_size = get_size_font("FROM", (view_points->width - 35) / 4);
 			y_up_text = MeasureTextEx(GetFontDefault(), "FROM", font_size, 0).y;
 
-			GuiScrollPanel({ rec.x + rec.width / 2, rec.y, rec.width / 2, rec.height }, "Lines", { 0, 0, rec.width / 2 - 15, 40.0f * Points::GetLines().size() }, scroll_lines, view_lines);
+			GuiScrollPanel({ rec.x + rec.width / 2, rec.y, rec.width / 2, rec.height }, "Lines", { 0, 0, rec.width / 2 - 15, 40.0f * Points::GetLines().size() + count_color_line * 40 }, scroll_lines, view_lines);
 
-			view_lines->width -= 35;
+			view_lines->width -= 60;
 
 			// Add new line
 			if (GuiButton({ rec.x + rec.width - size_add, rec.y, (float)size_add, (float)size_add }, "+")) {
@@ -171,13 +173,13 @@ namespace See3DLine {
 			DrawText("TO", view_lines->x + 3 * view_lines->width / 4 - MeasureText("TO", font_size) / 2, view_lines->y + 5, font_size, BLACK);
 
 			// line's list
-			int delete_line = -1;
+			int delete_line = -1, now_count_color_line = 0;
 
 			for (int i = 0; i < Points::GetLines().size(); ++i) {
 				if (scroll_lines->y + i * 40 >= 0 && scroll_lines->y + (i + 1) * 40 <= +view_lines->height) {
 					// Name 0
 					char* old_name = Points::GetLines()[i]->name_0.data();
-					if (GuiTextBox({ view_lines->x + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5, view_lines->width / 2 - 10, 30 }, old_name, 5, lines_edit[i][0])) {
+					if (GuiTextBox({ view_lines->x + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40, view_lines->width / 2 - 10, 30 }, old_name, 5, lines_edit[i][0])) {
 						lines_edit[i][0] = !lines_edit[i][0];
 					}
 					if (strlen(old_name) != Points::GetLines()[i]->name_0.size()) {
@@ -190,7 +192,7 @@ namespace See3DLine {
 
 					// Name 1
 					old_name = Points::GetLines()[i]->name_1.data();
-					if (GuiTextBox({ view_lines->x + view_lines->width / 2 + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5, view_lines->width / 2 - 10, 30 }, old_name, 5, lines_edit[i][1])) {
+					if (GuiTextBox({ view_lines->x + view_lines->width / 2 + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40, view_lines->width / 2 - 10, 30 }, old_name, 5, lines_edit[i][1])) {
 						lines_edit[i][1] = !lines_edit[i][1];
 					}
 					if (strlen(old_name) != Points::GetLines()[i]->name_1.size()) {
@@ -202,8 +204,42 @@ namespace See3DLine {
 					}
 
 					// Delete
-					if (GuiButton({ view_lines->x + view_lines->width + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5, 25, 25 }, "-"))
+					if (GuiButton({ view_lines->x + view_lines->width + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40, 25, 25 }, "-"))
 						delete_line = i;
+
+					// Color edit
+					if (GuiButton({ view_lines->x + view_lines->width + 30, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40, 25, 25 }, color_line_edit[i][0] ? "#121#" : "#120#")) {
+						if (color_line_edit[i][0])
+							--count_color_line;
+						else
+							++count_color_line;
+						color_line_edit[i][0] = !color_line_edit[i][0];
+					}
+
+					if (color_line_edit[i][0]) {
+						// R
+						int num = Points::GetLines()[i]->color.r;
+						if (GuiValueBox({ view_lines->x + 15, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width / 3 - 15, 30 }, "R", &num, 0, 255, color_line_edit[i][1])) {
+							color_line_edit[i][1] = !color_line_edit[i][1];
+						}
+						Points::GetLines()[i]->color.r = num;
+
+						// G
+						num = Points::GetLines()[i]->color.g;
+						if (GuiValueBox({ view_lines->x + 15 + view_lines->width / 3, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width / 3 - 15, 30}, "G", &num, 0, 255, color_line_edit[i][2])) {
+							color_line_edit[i][2] = !color_line_edit[i][2];
+						}
+						Points::GetLines()[i]->color.g = num;
+
+						// B
+						num = Points::GetLines()[i]->color.b;
+						if (GuiValueBox({ view_lines->x + 15 + 2 * view_lines->width / 3, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width / 3 - 15, 30 }, "R", &num, 0, 255, color_line_edit[i][3])) {
+							color_line_edit[i][3] = !color_line_edit[i][3];
+						}
+						Points::GetLines()[i]->color.b = num;
+						
+						++now_count_color_line;
+					}
 				}
 			}
 
@@ -256,9 +292,11 @@ namespace See3DLine {
 				for (int i = 0; i < n; ++i) {
 					std::string name_0, name_1;
 
+					Color color = { fin.get(), fin.get(), fin.get(), 255 };
+
 					fin >> name_0 >> name_1; fin.get();
 
-					lines[i] = new Line(name_0, name_1);
+					lines[i] = new Line(name_0, name_1, color);
 				}
 
 				if (Points::init(points, lines)) {
@@ -294,6 +332,9 @@ namespace See3DLine {
 				// lines
 				fout << (unsigned char)Points::GetLines().size();
 				for (int i = 0; i < Points::GetLines().size(); ++i) {
+					fout << (unsigned char)Points::GetLines()[i]->color.r;
+					fout << (unsigned char)Points::GetLines()[i]->color.g;
+					fout << (unsigned char)Points::GetLines()[i]->color.b;
 					fout << Points::GetLines()[i]->name_0 << "\n";
 					fout << Points::GetLines()[i]->name_1 << "\n";
 				}

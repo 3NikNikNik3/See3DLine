@@ -21,6 +21,10 @@ namespace See3DLine {
 
 			std::vector<std::vector<bool>> points_edit, lines_edit;
 
+			int count_color_line = 0;
+
+			std::vector<std::vector<bool>> color_line_edit;
+
 		public:
 			ScreenSettings();
 

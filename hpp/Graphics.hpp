@@ -42,9 +42,11 @@ namespace See3DLine {
 		{
 			std::pair<Point*, Point*> points;
 
+			Color color;
+
 			std::string name_0, name_1;
 
-			Line(std::string name_0, std::string name_1);
+			Line(std::string name_0, std::string name_1, Color color = {0, 0, 0, 255});
 
 			~Line();
 

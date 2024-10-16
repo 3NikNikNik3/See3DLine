@@ -47,7 +47,7 @@ namespace See3DLine::Graphics {
 	}
 
 	// Line
-	Line::Line(std::string name_0, std::string name_1) : name_0(name_0), name_1(name_1), points({ nullptr, nullptr }) {}
+	Line::Line(std::string name_0, std::string name_1, Color color) : name_0(name_0), name_1(name_1), points({nullptr, nullptr}), color(color) {}
 
 	Line::~Line() { }
 
@@ -160,7 +160,7 @@ namespace See3DLine::Graphics {
 			for (int i = 0; i < lines.size(); ++i)
 				DrawLine((lines[i]->points.first->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.first->new_pos.y / size.y) * rec.height + rec.y,
 					(lines[i]->points.second->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.second->new_pos.y / size.y) * rec.height + rec.y,
-					{ 0, 0, 0, 255 });
+					lines[i]->color);
 		}
 
 		int CountPoints(std::string what) {
