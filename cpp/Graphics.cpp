@@ -100,7 +100,7 @@ namespace See3DLine::Graphics {
 
 		Color color_fon = { 255, 255, 255, 255 };
 
-		bool show_name_points = true;
+		bool show_name_points = false;
 
 		bool init(std::vector<Point*>& ps, std::vector<Line*>& ls) {
 			if (ps.size() > 255 || ls.size() > 255)

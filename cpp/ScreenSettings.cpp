@@ -108,9 +108,10 @@ namespace See3DLine {
 			rec.y += 45;
 
 			// Fon's color
+			GuiCheckBox({ 15, rec.y + 10, 10, 10 }, "Show points name", &Points::GetShowNamePoints());
 
-			DrawText("Fon's color", 5, rec.y + 5, 20, BLACK);
-			GuiColor({ MeasureText("Fon's color", 20) + 10.0f, rec.y, rec.width - (MeasureText("Fon's color", 20) + 10.0f), 40 }, color_fon_edit, Points::GetColorFon());
+			DrawText("Fon's color", 145, rec.y + 5, 20, BLACK);
+			GuiColor({ MeasureText("Fon's color", 20) + 10.0f + 140, rec.y, rec.width - (MeasureText("Fon's color", 20) + 10.0f), 40 }, color_fon_edit, Points::GetColorFon());
 
 			rec.y += 40;
 
