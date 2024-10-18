@@ -111,7 +111,7 @@ namespace See3DLine {
 			GuiCheckBox({ 15, rec.y + 10, 10, 10 }, "Show points name", &Points::GetShowNamePoints());
 
 			DrawText("Fon's color", 145, rec.y + 5, 20, BLACK);
-			GuiColor({ MeasureText("Fon's color", 20) + 10.0f + 140, rec.y, rec.width - (MeasureText("Fon's color", 20) + 10.0f), 40 }, color_fon_edit, Points::GetColorFon());
+			GuiColor({ MeasureText("Fon's color", 20) + 10.0f + 140, rec.y, rec.width - (MeasureText("Fon's color", 20) + 10.0f + 140), 40 }, color_fon_edit, Points::GetColorFon());
 
 			rec.y += 40;
 
@@ -330,6 +330,11 @@ namespace See3DLine {
 					// elso
 					points_edit.resize(points.size(), { false, false, false, false });
 					lines_edit.resize(lines.size(), { false, false });
+					color_line_edit.resize(lines.size(), { false, false, false, false });
+
+					Points::GetShowNamePoints() = (bool)fin.get();
+
+					Points::GetColorFon() = { (unsigned char)fin.get(), (unsigned char)fin.get(), (unsigned char)fin.get(), 255 };
 				}
 				else
 					error();
@@ -365,6 +370,14 @@ namespace See3DLine {
 					fout << Points::GetLines()[i]->name_0 << "\n";
 					fout << Points::GetLines()[i]->name_1 << "\n";
 				}
+
+				// ShowPointsName
+				fout << (char)Points::GetShowNamePoints();
+
+				// Fon's color
+				fout << (unsigned char)Points::GetColorFon().r;
+				fout << (unsigned char)Points::GetColorFon().g;
+				fout << (unsigned char)Points::GetColorFon().b;
 
 				fout.close();
 			}
