@@ -25,6 +25,8 @@ namespace See3DLine {
 
 			std::vector<std::vector<bool>> color_line_edit;
 
+			std::vector<bool> color_fon_edit;
+
 		public:
 			ScreenSettings();
 

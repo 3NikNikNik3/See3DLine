@@ -22,6 +22,8 @@ namespace See3DLine {
 
 			color_line_edit.resize(Points::GetLines().size(), { false, false, false, false });
 
+			color_fon_edit.resize(4, false);
+
 			if (!std::filesystem::exists("shapes"))
 				std::filesystem::create_directory("shapes");
 		}
@@ -62,10 +64,13 @@ namespace See3DLine {
 			color.b = num;
 
 			// Result
-			DrawRectangle(rec.x + rec.width + 5, rec.y + 5, 20, 20, color);
+			DrawRectangle(rec.x + rec.width + 5, rec.y + 5, 20, 20, {125, 125, 125, 255});
+			DrawRectangle(rec.x + rec.width + 7, rec.y + 7, 16, 16, color);
 		}
 
 		void ScreenSettings::draw(Rectangle rec) {
+			ClearBackground(WHITE);
+
 			// file load/save
 
 			char* name_file = name.data();
@@ -101,6 +106,13 @@ namespace See3DLine {
 			}
 
 			rec.y += 45;
+
+			// Fon's color
+
+			DrawText("Fon's color", 5, rec.y, 20, BLACK);
+			GuiColor({ MeasureText("Fon's color", 20) + 10.0f, rec.y + 5, rec.width - (MeasureText("Fon's color", 20) + 10.0f), 40 }, color_fon_edit, Points::GetColorFon());
+
+			rec.y += 40;
 
 			// points
 
