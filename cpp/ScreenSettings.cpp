@@ -37,6 +37,34 @@ namespace See3DLine {
 			return ans;
 		}
 
+		void GuiColor(Rectangle rec, std::vector<bool>& edit_color, Color& color) {
+			rec.width -= 30;
+
+			// R
+			int num = color.r;
+			if (GuiValueBox({ rec.x + 15, rec.y, rec.width / 3 - 15, 30 }, "R", &num, 0, 255, edit_color[1])) {
+				edit_color[1] = !edit_color[1];
+			}
+			color.r = num;
+
+			// G
+			num = color.g;
+			if (GuiValueBox({ rec.x + 15 + rec.width / 3, rec.y, rec.width / 3 - 15, 30 }, "G", &num, 0, 255, edit_color[2])) {
+				edit_color[2] = !edit_color[2];
+			}
+			color.g = num;
+
+			// B
+			num = color.b;
+			if (GuiValueBox({ rec.x + 15 + 2 * rec.width / 3, rec.y, rec.width / 3 - 15, 30 }, "B", &num, 0, 255, edit_color[3])) {
+				edit_color[3] = !edit_color[3];
+			}
+			color.b = num;
+
+			// Result
+			DrawRectangle(rec.x + rec.width + 5, rec.y + 5, 20, 20, color);
+		}
+
 		void ScreenSettings::draw(Rectangle rec) {
 			// file load/save
 
@@ -69,6 +97,7 @@ namespace See3DLine {
 
 				points_edit.clear();
 				lines_edit.clear();
+				color_line_edit.clear();
 			}
 
 			rec.y += 45;
@@ -165,6 +194,8 @@ namespace See3DLine {
 				Points::GetLines().push_back(new Line("S", "E"));
 				lines_edit.push_back({ false, false });
 
+				color_line_edit.push_back({ false, false, false, false });
+
 				Points::GetLines()[Points::GetLines().size() - 1]->updata_0(Points::GetPoints());
 				Points::GetLines()[Points::GetLines().size() - 1]->updata_1(Points::GetPoints());
 			}
@@ -217,26 +248,8 @@ namespace See3DLine {
 					}
 
 					if (color_line_edit[i][0]) {
-						// R
-						int num = Points::GetLines()[i]->color.r;
-						if (GuiValueBox({ view_lines->x + 15, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width / 3 - 15, 30 }, "R", &num, 0, 255, color_line_edit[i][1])) {
-							color_line_edit[i][1] = !color_line_edit[i][1];
-						}
-						Points::GetLines()[i]->color.r = num;
-
-						// G
-						num = Points::GetLines()[i]->color.g;
-						if (GuiValueBox({ view_lines->x + 15 + view_lines->width / 3, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width / 3 - 15, 30}, "G", &num, 0, 255, color_line_edit[i][2])) {
-							color_line_edit[i][2] = !color_line_edit[i][2];
-						}
-						Points::GetLines()[i]->color.g = num;
-
-						// B
-						num = Points::GetLines()[i]->color.b;
-						if (GuiValueBox({ view_lines->x + 15 + 2 * view_lines->width / 3, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width / 3 - 15, 30 }, "R", &num, 0, 255, color_line_edit[i][3])) {
-							color_line_edit[i][3] = !color_line_edit[i][3];
-						}
-						Points::GetLines()[i]->color.b = num;
+						// Color
+						GuiColor({ view_lines->x, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40 + 40, view_lines->width + 60, 40 }, color_line_edit[i], Points::GetLines()[i]->color);
 						
 						++now_count_color_line;
 					}
@@ -249,6 +262,7 @@ namespace See3DLine {
 
 				delete Points::GetLines()[delete_line];
 				Points::GetLines().erase(Points::GetLines().begin() + delete_line);
+				color_line_edit.erase(color_line_edit.begin() + delete_line);
 				lines_edit.erase(lines_edit.begin() + delete_line);
 			}
 
