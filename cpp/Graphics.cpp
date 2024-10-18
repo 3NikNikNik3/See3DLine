@@ -46,6 +46,11 @@ namespace See3DLine::Graphics {
 		}
 	}
 
+	void Point::draw_name(Color color, Rectangle rec, Vector2 size) {
+		Vector2 pos = { (new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - new_pos.y / size.y) * rec.height + rec.y };
+		DrawText(name.c_str(), pos.x - MeasureText(name.c_str(), 20), pos.y - MeasureTextEx(GetFontDefault(), name.c_str(), 20, 0).y, 20, { (unsigned char)(255 - color.r), (unsigned char)(255 - color.g), (unsigned char)(255 - color.b), 255 });
+	}
+
 	// Line
 	Line::Line(std::string name_0, std::string name_1, Color color) : name_0(name_0), name_1(name_1), points({nullptr, nullptr}), color(color) {}
 
@@ -94,6 +99,8 @@ namespace See3DLine::Graphics {
 		Math::Matrix see_rev = Math::Matrix({ {0, 0, -1}, {0, 1, 0}, {1, 0, 0} });
 
 		Color color_fon = { 255, 255, 255, 255 };
+
+		bool show_name_points = true;
 
 		bool init(std::vector<Point*>& ps, std::vector<Line*>& ls) {
 			if (ps.size() > 255 || ls.size() > 255)
@@ -161,6 +168,11 @@ namespace See3DLine::Graphics {
 				DrawLine((lines[i]->points.first->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.first->new_pos.y / size.y) * rec.height + rec.y,
 					(lines[i]->points.second->new_pos.x / size.x + 0.5) * rec.width + rec.x, (0.5 - lines[i]->points.second->new_pos.y / size.y) * rec.height + rec.y,
 					lines[i]->color);
+
+			if (show_name_points) {
+				for (int i = 0; i < points.size(); ++i)
+					points[i]->draw_name(color_fon, rec, size);
+			}
 		}
 
 		int CountPoints(std::string what) {
@@ -184,5 +196,7 @@ namespace See3DLine::Graphics {
 		std::vector<Line*>& GetLines() { return lines; }
 
 		Color& GetColorFon() { return color_fon; }
+
+		bool& GetShowNamePoints() { return show_name_points; }
 	}
 }

@@ -36,6 +36,8 @@ namespace See3DLine {
 			void add_me(std::vector<Line*>& arr);
 
 			void delete_line(Line* line);
+
+			void draw_name(Color color, Rectangle rec, Vector2 size);
 		};
 
 		struct Line
@@ -85,6 +87,8 @@ namespace See3DLine {
 			int CountPoints(std::string what);
 
 			Color& GetColorFon();
+
+			bool& GetShowNamePoints();
 		}
 	}
 }

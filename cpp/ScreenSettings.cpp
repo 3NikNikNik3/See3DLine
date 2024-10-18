@@ -109,8 +109,8 @@ namespace See3DLine {
 
 			// Fon's color
 
-			DrawText("Fon's color", 5, rec.y, 20, BLACK);
-			GuiColor({ MeasureText("Fon's color", 20) + 10.0f, rec.y + 5, rec.width - (MeasureText("Fon's color", 20) + 10.0f), 40 }, color_fon_edit, Points::GetColorFon());
+			DrawText("Fon's color", 5, rec.y + 5, 20, BLACK);
+			GuiColor({ MeasureText("Fon's color", 20) + 10.0f, rec.y, rec.width - (MeasureText("Fon's color", 20) + 10.0f), 40 }, color_fon_edit, Points::GetColorFon());
 
 			rec.y += 40;
 
