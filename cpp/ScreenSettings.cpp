@@ -107,6 +107,22 @@ namespace See3DLine {
 
 			rec.y += 45;
 
+			// Math operator
+			if (GuiButton({ 0, rec.y, rec.width / 4, 25 }, "+1"))
+				if (!Points::add_cor())
+					error();
+			if (GuiButton({ rec.width / 4, rec.y, rec.width / 4, 25 }, "*2"))
+				if (!Points::mul_cor())
+					error();
+			if (GuiButton({ rec.width / 2, rec.y, rec.width / 4, 25 }, "/2"))
+				if (!Points::div_cor())
+					error();
+			if (GuiButton({ rec.width * 3 / 4, rec.y, rec.width / 4, 25 }, "-1"))
+				if (!Points::dif_cor())
+					error();
+
+			rec.y += 30;
+
 			// Fon's color
 			GuiCheckBox({ 15, rec.y + 10, 10, 10 }, "Show points name", &Points::GetShowNamePoints());
 

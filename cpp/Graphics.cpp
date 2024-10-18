@@ -183,6 +183,68 @@ namespace See3DLine::Graphics {
 			return ans;
 		}
 
+		void get_bord(Math::Vector3& min_, Math::Vector3& max_) {
+			min_ = { 255, 255, 255 };
+			max_ = { 0, 0, 0 };
+
+			for (int i = 0; i < points.size(); ++i) {
+				max_ = { std::max(points[i]->vec.x, max_.x), std::max(points[i]->vec.y, max_.y), std::max(points[i]->vec.z, max_.z) };
+				min_ = { std::min(points[i]->vec.x, min_.x), std::min(points[i]->vec.y, min_.y), std::min(points[i]->vec.z, min_.z) };
+			}
+		}
+
+		bool add_cor() {
+			Math::Vector3 min_, max_;
+			get_bord(min_, max_);
+
+			if (max_.x == 255 || max_.y == 255 || max_.z == 255)
+				return false;
+
+			for (int i = 0; i < points.size(); ++i)
+				points[i]->vec += {1, 1, 1};
+			
+			return true;
+		}
+
+		bool dif_cor() {
+			Math::Vector3 min_, max_;
+			get_bord(min_, max_);
+
+			if (min_.x == 0 || min_.y == 0 || min_.z == 0)
+				return false;
+
+			for (int i = 0; i < points.size(); ++i)
+				points[i]->vec += {-1, -1, -1};
+			
+			return true;
+		}
+
+		bool div_cor() {
+			for (int i = 0; i < points.size(); ++i) {
+				if ((int)points[i]->vec.x % 2 == 1 || (int)points[i]->vec.y % 2 == 1 || (int)points[i]->vec.z % 2 == 1) {
+					return false;
+				}
+			}
+			
+			for (int i = 0; i < points.size(); ++i) {
+				points[i]->vec = { (float)((int)points[i]->vec.x / 2), (float)((int)points[i]->vec.y / 2), (float)((int)points[i]->vec.z / 2) };
+			}
+
+			return true;
+		}
+
+		bool mul_cor() {
+			for (int i = 0; i < points.size(); ++i)
+				if (points[i]->vec.x * 2 > 255 || points[i]->vec.y * 2 > 255 || points[i]->vec.z * 2 > 255) {
+					return false;
+				}
+
+			for (int i = 0; i < points.size(); ++i)
+				points[i]->vec = { points[i]->vec.x * 2, points[i]->vec.y * 2, points[i]->vec.z * 2 };
+
+			return true;
+		}
+
 		Math::Matrix*& GetAngXZ() { return ang_xz; }
 
 		Math::Matrix*& GetAngXY() { return ang_xy; }

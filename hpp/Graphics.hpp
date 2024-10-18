@@ -72,6 +72,16 @@ namespace See3DLine {
 
 			void draw(Rectangle rec, Vector2 size);
 
+			void get_bord(Math::Vector3& min_, Math::Vector3& max_);
+
+			bool add_cor();
+
+			bool dif_cor();
+
+			bool mul_cor();
+
+			bool div_cor();
+
 			Math::Matrix*& GetAngXZ();
 
 			Math::Matrix*& GetAngXY();
