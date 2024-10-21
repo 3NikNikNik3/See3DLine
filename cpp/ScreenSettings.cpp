@@ -137,7 +137,7 @@ namespace See3DLine {
 			int y_up_text = MeasureTextEx(GetFontDefault(), "NAME", font_size, 0).y;
 			int* val = new int();
 
-			GuiScrollPanel({rec.x, rec.y, rec.width / 2, rec.height}, "Points", {0, 0, rec.width / 2 - 15, (float)y_up_text + 40 * Points::GetPoints().size() }, scroll_points, view_points);
+			GuiScrollPanel({rec.x, rec.y, rec.width / 2, rec.height}, "Points", {0, 0, rec.width / 2 - 15, (float)y_up_text + 40 * Points::GetPoints().size() + 120 }, scroll_points, view_points);
 
 			// Add new point
 			int size_add = 24;
@@ -214,7 +214,7 @@ namespace See3DLine {
 			font_size = get_size_font("FROM", (view_points->width - 35) / 4);
 			y_up_text = MeasureTextEx(GetFontDefault(), "FROM", font_size, 0).y;
 
-			GuiScrollPanel({ rec.x + rec.width / 2, rec.y, rec.width / 2, rec.height }, "Lines", { 0, 0, rec.width / 2 - 15, 40.0f * Points::GetLines().size() + count_color_line * 40 }, scroll_lines, view_lines);
+			GuiScrollPanel({ rec.x + rec.width / 2, rec.y, rec.width / 2, rec.height }, "Lines", { 0, 0, rec.width / 2 - 15, 40.0f * Points::GetLines().size() + count_color_line * 40 + y_up_text + 120 }, scroll_lines, view_lines);
 
 			view_lines->width -= 60;
 
@@ -236,7 +236,7 @@ namespace See3DLine {
 			int delete_line = -1, now_count_color_line = 0;
 
 			for (int i = 0; i < Points::GetLines().size(); ++i) {
-				if (scroll_lines->y + i * 40 >= 0 && scroll_lines->y + (i + 1) * 40 <= +view_lines->height) {
+				if (scroll_lines->y + i * 40 >= 0 && scroll_lines->y + (i + 1) * 40 <= view_lines->height) {
 					// Name 0
 					char* old_name = Points::GetLines()[i]->name_0.data();
 					if (GuiTextBox({ view_lines->x + 5, view_lines->y + scroll_lines->y + y_up_text + 40 * i + 5 + now_count_color_line * 40, view_lines->width / 2 - 10, 30 }, old_name, 5, lines_edit[i][0])) {
