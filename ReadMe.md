@@ -16,7 +16,7 @@ So it works very fast, but long distances don't work very well.
 
 # More about the possibilities
 
-You can edit the shape through the editor. And also save them and download ready-made ones
+You can edit the shape through the editor (including the color of the lines and background). And also save them and download ready-made ones
 
 ![image](images/1.png)
 
